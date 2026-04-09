@@ -1,0 +1,9 @@
+{
+  "type": "debug",
+  "output": "result.html",
+  "groups": ["M18"],
+  "pages": [
+    "http://www.obelarus.net/results/2026/260404r_orion-spring.htm",
+    "http://www.obelarus.net/results/2026/260405r_orion-spring.htm"
+  ]
+}
