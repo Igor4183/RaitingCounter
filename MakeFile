@@ -1,0 +1,22 @@
+CXX = g++-14
+CXXFLAGS = -std=c++20 -Wall -Wextra -Iinclude
+
+SRC = src/main.cpp src/config.cpp src/parser.cpp src/model.cpp
+OBJ = build/main.o build/config.o build/parser.o build/model.o
+
+TARGET = app
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ)
+
+build/%.o: src/%.cpp
+	mkdir -p build
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -rf build $(TARGET)
+
+run: all
+	./$(TARGET)
