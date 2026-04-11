@@ -7,3 +7,34 @@ main — только связывает всё вместе.
 
 
 !!!!!!!! может неправильно обрабатывать 18 группу из-за странной формулировке в положении
+
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DEBUG</title>
+</head>
+<body>
+
+<h2>DEBUG RESULTS</h2>
+
+<table border="1">
+<tr>
+  <th>#</th>
+  <th>Name</th>
+  <th>Sum</th>
+  <th>1</th>
+  <th>2</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td>Ivan</td>
+  <td>666</td>
+  <td>100</td>
+  <td>566</td>
+</tr>
+</table>
+
+</body>
+</html>

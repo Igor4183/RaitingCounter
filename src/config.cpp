@@ -25,7 +25,7 @@ void addGroup(std::u32string group){
 }
 
 void readConfig(){
-    std::ifstream file("./config.json");
+    std::ifstream file("config.json");
     
     json j;
     file >> j;

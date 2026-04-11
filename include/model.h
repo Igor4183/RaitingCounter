@@ -48,4 +48,5 @@ struct AthleteCmp{
     }
 };
 
-extern std::map<std::u32string, Athlete> base;
+extern std::map<std::u32string, Athlete> allBase;
+extern std::map<std::u32string, std::vector<Athlete>> groupBase;

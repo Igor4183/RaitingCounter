@@ -1,8 +1,8 @@
 CXX = g++-14
 CXXFLAGS = -std=c++20 -Wall -Wextra -Iinclude -mmacosx-version-min=26.0
 
-SRC = src/main.cpp src/config.cpp src/parser.cpp src/model.cpp src/u32string.cpp
-OBJ = build/main.o build/config.o build/parser.o build/model.o build/u32string.o
+SRC = src/main.cpp src/config.cpp src/parser.cpp src/model.cpp src/u32string.cpp src/generator.cpp
+OBJ = build/main.o build/config.o build/parser.o build/model.o build/u32string.o build/generator.o
 
 TARGET = app
 

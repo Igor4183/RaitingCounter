@@ -37,7 +37,8 @@ bool isNumber(const std::u32string s){
 std::u32string getGroup (char32_t gender, int date){
     int groupNum = nowYear - date;
     groupNum += (groupNum & 1);
-    return std::u32string(gender, 1) + to_u32(groupNum);
+    if (groupNum>18) groupNum = 21;
+    return std::u32string(1, gender) + to_u32(groupNum);
 }
 
 void parse(std::u32string link, int nowid){
@@ -103,14 +104,14 @@ void parse(std::u32string link, int nowid){
                         iss.str(to_utf8(u32line.substr(datePtr)));
                         std::string dateStr;
                         iss >> dateStr;
-                        std::cout << "dateStr: " << dateStr <<  " | "; 
+                        // std::cout << "dateStr: " << dateStr <<  " | "; 
                         int date = stoi(dateStr);
 
                         iss.clear();
                         iss.str(to_utf8(u32line.substr(placePtr)));
                         std::string placeStr;
                         iss >> placeStr;
-                        std::cout << "placeStr: " << placeStr << " | "; 
+                        // std::cout << "placeStr: " << placeStr << " | "; 
                         if (!isNumber(placeStr)) continue; // "в/к, -"
                         int place = stoi(placeStr);
 
@@ -118,16 +119,16 @@ void parse(std::u32string link, int nowid){
                         iss.str(to_utf8(u32line.substr(timePtr)));
                         std::string resTimeStr;
                         iss >> resTimeStr;
-                        std::cout << "resTimeStr: " << resTimeStr <<  std::endl; 
+                        // std::cout << "resTimeStr: " << resTimeStr <<  std::endl; 
                         int resTime = getTime(resTimeStr);
 
                         std::u32string key = u32name + U" " + u32surname + U" " + to_u32(date);
                         if (place == 1){
                             leader = resTime;
-                            base[key].add_points(u32name, u32surname, getGroup(group[0], date), date, pointsClass, nowid);
+                            allBase[key].add_points(u32name, u32surname, getGroup(group[0], date), date, pointsClass, nowid);
                         } else{
                             int addPoints = std::max<int>(round((long double)pointsClass * (2.0 * leader / resTime - 1)), 0);
-                            base[key].add_points(u32name, u32surname, getGroup(group[0], date), date, addPoints, nowid);
+                            allBase[key].add_points(u32name, u32surname, getGroup(group[0], date), date, addPoints, nowid);
                         }
                     }
                     break;
