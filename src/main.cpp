@@ -1,6 +1,7 @@
 #include "model.h"
 #include "config.h"
 #include "parser.h"
+#include "u32string.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,7 +10,7 @@ int main(){
     readConfig();
     
     size_t nowid = 0;
-    for (std::string link : pages){
+    for (std::u32string link : pages){
         parse(link, nowid);
         nowid++;
     }

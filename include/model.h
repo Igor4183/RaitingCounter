@@ -13,22 +13,22 @@ enum class TypeResult{
 
 extern TypeResult typeResult;
 extern int cntCompetitions;
-extern std::vector<std::string> groups;
-extern std::vector<std::string> pages;
+extern std::vector<std::u32string> groups;
+extern std::vector<std::u32string> pages;
 
 struct Result{
-    // std::string link = "None";
+    // std::u32string link = "None";
     // int time = -1, place = -1;
     int score = 0;
 };  
 
 struct Athlete{
-    std::string name, surname, group;
+    std::u32string name, surname, group;
     int DOB;
     std::vector<Result> points;
     int sum = 0;
 
-    void add_points(std::string name, std::string surname, std::string group, int DOB, int addPoints, size_t nowid)
+    void add_points(std::u32string name, std::u32string surname, std::u32string group, int DOB, int addPoints, size_t nowid)
         {
             this->name = name;
             this->surname = surname;
@@ -48,4 +48,4 @@ struct AthleteCmp{
     }
 };
 
-extern std::map<std::string, Athlete> base;
+extern std::map<std::u32string, Athlete> base;
