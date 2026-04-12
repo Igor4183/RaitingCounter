@@ -11,17 +11,9 @@
 using json = nlohmann::json;
 
 void addGroup(std::u32string group){
-    size_t pos = group.find_first_of(U"0123456789");
-    std::u32string prefix = group.substr(0, pos);
-    std::cout << "addGroup " << group << "|" << group.substr(pos) << ' ';
-    groups.push_back(group);
-    if (group.substr(pos) != U"18") 
-        groups.push_back(std::u32string(group[0], 1) + to_u32(stoi(to_utf8(group.substr(pos)))+2));
-    else {
-        groups.push_back(prefix + U"21");
-        groups.push_back(prefix + U"21E");
-    }
-    std::cout << "end" << std::endl;
+    groups.emplace_back(group);
+    for (auto& now : aboveGroups.at(group)) 
+        groups.emplace_back(now);
 }
 
 void readConfig(){
@@ -30,16 +22,23 @@ void readConfig(){
     json j;
     file >> j;
 
-    typeResult = (j["type"] == "debug" ? TypeResult::debug : TypeResult::release);
-    for (std::string group : j["groups"]){
+    typeResult = (j["type"] == "debug" ? Type::debug : Type::release);
+    for (std::string group : j["groups"])
         addGroup(to_u32(group));
-    }
+    
     std::sort(groups.begin(), groups.end());
     groups.resize(std::unique(groups.begin(), groups.end()) - groups.begin());
     
-    for (std::string page : j["pages"]){
-        pages.push_back(to_u32(page));
+    for (auto page : j["pages"]){
         cntCompetitions++;
+        int id = page["id"];
+        std::string url = page["url"];
+        std::string title = page["title"];
+        std::string discipline = page["discipline"];
+        std::string date = page["date"];
+        int classComp = page["class"];
+
+        pages.push_back(Competition{id, to_u32(url), to_u32(title), to_u32(discipline), to_u32(date), classComp});
     }
 
 }

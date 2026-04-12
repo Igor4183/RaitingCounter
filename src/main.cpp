@@ -10,24 +10,26 @@
 
 int main(){
     readConfig();
+
+    // for (auto page : pages){
+    //     std::cout << page.id << ' ' << page.url << ' ' << page.title << ' ' << page.discipline << ' ' << page.date << ' ' << page.classComp << std::endl;
+    // }
     
-    size_t nowid = 0;
-    for (std::u32string link : pages){
-        parse(link, nowid);
-        nowid++;
-    }
+    for (auto& page : pages)
+        parse(page);
     
-    if (typeResult==TypeResult::debug){
-        std::cout << "--------------------make base---------------------" << std::endl;
-        std::cout << "base_size: " << allBase.size() << std::endl;
-        std::cout <<  "-------------------------------------------------" << std::endl;
+    if (typeResult==Type::debug){
+        std::cout << "------------------" << "base_size: " << bigBase.size() << "------------------" << std::endl;
     }
 
-    // for (auto [key, a] : allBase){
-    //     std::cout << a.name << ' ' << a.surname << ' ' << a.group << ' ' << a.DOB << ' ' << a.sum << std::endl;
+    // for (auto [key, a] : bigBase){
+    //     std::cout << a.name << ' ' << a.surname << ' ' << a.group << ' ' << a.DOB << ' ' << a.sum << ": ";
+    //     for (auto now : a.points) 
+    //         std::cout << now.score << ' ';
+    //     std::cout << std::endl;
     // }
 
-    for (auto [key, athlete] : allBase)
+    for (auto [key, athlete] : bigBase)
         groupBase[athlete.group].push_back(athlete);
     
     for (auto& [group, vec] : groupBase){

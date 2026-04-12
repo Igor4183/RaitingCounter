@@ -1,9 +1,9 @@
 #include "model.h"
 #include <iostream>
 
-TypeResult typeResult = TypeResult::debug;
+Type typeResult = Type::debug;
 int cntCompetitions = 0;
 std::vector<std::u32string> groups;
-std::vector<std::u32string> pages;
-std::map<std::u32string, Athlete> allBase;
+std::vector<Competition> pages;
+std::map<std::u32string, Athlete> bigBase;
 std::map<std::u32string, std::vector<Athlete>> groupBase;

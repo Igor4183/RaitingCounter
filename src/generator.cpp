@@ -26,7 +26,8 @@ std::u32string getTable(std::u32string group){
         res+=U"  <td>" + a[i-1].name + U" " + a[i-1].surname + U"</td>\n";
         res+=U"  <td>" + to_u32(a[i-1].sum) + U"</td>\n";
         for (int j = 0; j<cntCompetitions; j++){
-            res+=U"  <td>" + to_u32(a[i-1].points[j].score) + U"</td>\n";
+            if ((int)a[i-1].points.size()<=j) res+=U"  <td> 0 </td>\n";
+            else res+=U"  <td>" + to_u32(a[i-1].points[j].score) + U"</td>\n";
         }
         res+=U"<tr>\n";
     }
@@ -36,7 +37,7 @@ std::u32string getTable(std::u32string group){
 }
 
 void makeHTML(){
-    if (typeResult==TypeResult::debug) std::cout << "start makeHTML" << std::endl;
+    if (typeResult==Type::debug) std::cout << "start makeHTML" << std::endl;
     std::ifstream in("template.html");
     std::u32string res = U"";
 
@@ -56,7 +57,7 @@ void makeHTML(){
     file >> j;
     
     for (std::string group : j["groups"]){
-         if (typeResult==TypeResult::debug)  std::cout << group << " size: " << groupBase[to_u32(group)].size() << std::endl;
+         if (typeResult==Type::debug)  std::cout << group << " size: " << groupBase[to_u32(group)].size() << std::endl;
         std::u32string table = getTable(to_u32(group));
         res = res.substr(0, pos) + table + res.substr(pos);
         pos += table.size();
