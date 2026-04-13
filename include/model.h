@@ -4,8 +4,11 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <algorithm>
+#include <numeric>
 
 const int nowYear = 2026;
+const size_t getBest = 2;
 const std::map<std::u32string, std::vector<std::u32string>> aboveGroups = {
     {U"М10", {U"М12"}},
     {U"М12", {U"М14"}},
@@ -67,7 +70,21 @@ struct Athlete{
     std::u32string name = U"", surname = U"", group = U"";
     int DOB = -1;
     std::vector<Result> points;
+    std::vector<int> idxs;
     int sum = 0;
+
+    void updateSum(){
+        idxs.assign(points.size(), 0);
+        std::iota(idxs.begin(), idxs.end(), 0);
+        sort(idxs.begin(), idxs.end(), [&](const int a, const int b){
+            return points[a].score > points[b].score;
+        });
+
+        if (idxs.size()>getBest) idxs.resize(getBest);
+        sum = 0;
+        for (auto idx : idxs) 
+            sum+=points[idx].score;
+    }
 
     void makeAthlete(std::u32string name, std::u32string surname, std::u32string group, int DOB){
         if (this->name==U"") this->name = name;
@@ -79,7 +96,8 @@ struct Athlete{
     void add_points(Competition& page, int time, int place, Result& leader) {
         while ((int)points.size()<page.id)
             points.emplace_back(Result());
-        sum += points.back().getScore(time, place, leader, &page);
+        points.back().getScore(time, place, leader, &page);
+        updateSum();
     }
 };
 

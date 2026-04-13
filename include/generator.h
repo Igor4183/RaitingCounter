@@ -4,4 +4,4 @@
 #include <iostream>
 #include <string>
 
-void makeHTML();
+void makeDebugHTML();

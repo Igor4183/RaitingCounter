@@ -8,8 +8,17 @@
 
 using json = nlohmann::json;
 
+std::u32string makeTime(int time){
+    if (time == -1) return U"--:--";
+    std::u32string res = to_u32(time/60) + U":";
+    if (time%60<10) res+=U"0";
+    res+=to_u32(time%60);
+    return res;
+}
+
 std::u32string getTable(std::u32string group){
-    std::u32string res = U"<h2> " + group + U" </h2>\n\n";
+    std::u32string res = U"<h2> " + group + U" </h2>\n";
+    res+=U"<h4> Лучшие " + to_u32(getBest) + U" старта</h4>\n\n";
     res+=U"<table border=\"1\">\n";
     res+=U"<tr>\n";
     res+=U"  <th>#</th>\n";
@@ -26,18 +35,28 @@ std::u32string getTable(std::u32string group){
         res+=U"  <td>" + a[i-1].name + U" " + a[i-1].surname + U"</td>\n";
         res+=U"  <td>" + to_u32(a[i-1].sum) + U"</td>\n";
         for (int j = 0; j<cntCompetitions; j++){
-            if ((int)a[i-1].points.size()<=j) res+=U"  <td> 0 </td>\n";
-            else res+=U"  <td>" + to_u32(a[i-1].points[j].score) + U"</td>\n";
+            if ((int)a[i-1].points.size()<=j) res+=U"  <td> <span style=\"opacity:0.4\"> 0 </span> </td>\n";
+            else {
+                //res+=U"  <td>" + to_u32(a[i-1].points[j].score) + U"</td>\n";
+                res+=U"  <td title=\"⏱ " + makeTime(a[i-1].points[j].time) + U" | 🏁";
+                if (a[i-1].points[j].place < 1) res+= U"нет результата\">\n";
+                else res += to_u32(a[i-1].points[j].place) + U" место\">\n" ;
+
+                bool inSum = (find(a[i-1].idxs.begin(), a[i-1].idxs.end(), j) != a[i-1].idxs.end());
+                if (inSum) res += U"    <b>" + to_u32(a[i-1].points[j].score) + U"</b>\n";
+                else res += U"    <span style=\"opacity:0.4\">" + to_u32(a[i-1].points[j].score) + U"</span>\n";
+                res += U"  </td>\n";
+            }
         }
-        res+=U"<tr>\n";
+        res+=U"</tr>\n";
     }
 
     res+=U"</table>\n\n";
     return res;
 }
 
-void makeHTML(){
-    if (typeResult==Type::debug) std::cout << "start makeHTML" << std::endl;
+void makeDebugHTML(){
+    if (typeResult==Type::debug) std::cout << "start makeDebugHTML" << std::endl;
     std::ifstream in("template.html");
     std::u32string res = U"";
 
