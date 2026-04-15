@@ -38,5 +38,5 @@ int main(){
         });
     }
 
-    makeDebugHTML();
+    generate();
 }

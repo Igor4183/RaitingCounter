@@ -1,22 +1,19 @@
 CXX = g++-14
-CXXFLAGS = -g -std=c++20 -Wall -Wextra -Iinclude -mmacosx-version-min=26.0
+CXXFLAGS = -std=c++20 -Wall -Wextra -Iinclude -Iinclude/generator -mmacosx-version-min=26.0
 
-SRC = src/main.cpp src/config.cpp src/parser.cpp src/model.cpp src/u32string.cpp src/generator.cpp
-OBJ = build/main.o build/config.o build/parser.o build/model.o build/u32string.o build/generator.o
+SRC = $(shell find src -name "*.cpp")
+OBJ = $(patsubst src/%.cpp, build/%.o, $(SRC))
 
 TARGET = app
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 build/%.o: src/%.cpp
-	mkdir -p build
+	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf build $(TARGET)
-
-run: all
-	./$(TARGET)
