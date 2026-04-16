@@ -23,8 +23,10 @@ void readConfig(){
     file >> j;
 
     typeResult = (j["type"] == "debug" ? Type::debug : Type::release);
-    for (std::string group : j["groups"])
+    for (std::string group : j["groups"]){
+        groupsInJSON.push_back(to_u32(group));
         addGroup(to_u32(group));
+    }
     
     std::sort(groups.begin(), groups.end());
     groups.resize(std::unique(groups.begin(), groups.end()) - groups.begin());

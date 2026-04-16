@@ -32,22 +32,19 @@ enum class Type{
     release
 };
 
-extern Type typeResult;
-extern int cntCompetitions;
-extern std::vector<std::u32string> groups;
-
 struct Competition{
     int id = -1;
     std::u32string url, title, discipline, date;
     int classComp;
 };
 
-extern std::vector<Competition> pages;
-
 struct Result{
     Competition* page = nullptr;
     int time = -1, place = -1;
     int score = 0;
+
+    Result() = default;
+    Result(Competition* page) : page(page) {} 
 
     int getScore(int time, int place, Result& leader, Competition* page){
         this->page = page;
@@ -101,5 +98,12 @@ struct Athlete{
     }
 };
 
+extern Type typeResult;
+extern int cntCompetitions;
+extern int cntAthletes;
+extern int bestScore;
+extern std::vector<std::u32string> groupsInJSON;
+extern std::vector<std::u32string> groups;
+extern std::vector<Competition> pages;
 extern std::map<std::u32string, Athlete> bigBase;
 extern std::map<std::u32string, std::vector<Athlete>> groupBase;

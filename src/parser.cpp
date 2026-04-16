@@ -84,7 +84,7 @@ void parse(Competition& page){
                         if (u32line[0]==U'-') break;
                         std::istringstream iss(line.substr(nameptr));
                         std::string name, surname;
-                        iss >> name >> surname;
+                        iss >> surname >> name;
                         std::u32string u32name = to_u32(name), u32surname = to_u32(surname);
 
                         iss.clear();

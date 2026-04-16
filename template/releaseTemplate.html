@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Results</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#64748b;
+      --line:#e5e7eb;
+      --accent:#2563eb;
+      --good:#16a34a;
+      --bad:#9ca3af;
+      --gold-bg:#fff4cc;
+      --silver-bg:#eef2f7;
+      --bronze-bg:#fbe8d7;
+      --alt:#eef6ff;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(16,185,129,.08), transparent 24%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px 12px 24px;
+    }
+
+    .header{
+      background:linear-gradient(135deg, #ffffff, #eff6ff);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px 18px;
+      box-shadow:0 16px 40px rgba(15,23,42,.08);
+      margin-bottom:14px;
+    }
+
+    .header h1{
+      margin:0;
+      font-size:clamp(24px, 4vw, 34px);
+      letter-spacing:-.03em;
+      line-height:1.05;
+    }
+
+    .header p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .summary{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin:0 0 14px;
+    }
+
+    th a {
+      color: inherit;
+      text-decoration: none;
+      font-weight: inherit;
+      display: inline-block;
+      width: 100%;
+      padding: 4px 0;
+    }
+
+    th a:hover {
+      text-decoration: underline;
+    }
+
+    .stat{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px 16px;
+      box-shadow:0 10px 24px rgba(15,23,42,.06);
+    }
+
+    .stat .label{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .stat .value{
+      margin-top:8px;
+      font-size:24px;
+      font-weight:900;
+      color:#0f172a;
+    }
+
+    .stat .value.accent{color:var(--accent)}
+    .stat .value.green{color:var(--good)}
+
+    .tabs{
+      position:sticky;
+      top:10px;
+      z-index:20;
+      display:flex;
+      gap:10px;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:10px;
+      margin:0 0 14px;
+      background:rgba(245,247,251,.88);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:18px;
+    }
+
+    .tabs a{
+      flex:none;
+      text-decoration:none;
+      color:var(--text);
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:700;
+      font-size:14px;
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+
+    .tabs a:hover{
+      border-color:#bfdbfe;
+      background:#eff6ff;
+      transform:translateY(-1px);
+    }
+
+    .group{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 16px 40px rgba(15,23,42,.08);
+      margin-bottom:16px;
+    }
+
+    .group-head{
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      background:linear-gradient(180deg, #fff, #f8fafc);
+    }
+
+    .group-head h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.02em;
+    }
+
+    .group-head .meta{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    table{
+      width:100%;
+      min-width:760px;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+
+    thead th{
+      background:#f8fafc;
+      color:#475569;
+      text-align:left;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      padding:13px 14px;
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
+      position:static;
+    }
+
+    tbody td{
+      padding:13px 14px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:nth-child(odd){
+      background:#fff;
+    }
+
+    tbody tr:nth-child(even){
+      background:var(--alt);
+    }
+
+    tbody tr:hover{
+      background:#eaf2ff;
+    }
+
+    .top1{
+      background:var(--gold-bg) !important;
+      outline:1px solid rgba(245,158,11,.25);
+    }
+
+    .top2{
+      background:var(--silver-bg) !important;
+      outline:1px solid rgba(148,163,184,.2);
+    }
+
+    .top3{
+      background:var(--bronze-bg) !important;
+      outline:1px solid rgba(180,83,9,.18);
+    }
+
+    tbody tr:not(.top1):not(.top2):not(.top3):nth-child(even){
+      background:#fff;
+    }
+
+    tbody tr:not(.top1):not(.top2):not(.top3):nth-child(odd){
+      background:var(--alt);
+    }
+
+    .rank{
+      width:56px;
+      font-weight:900;
+      color:var(--accent);
+    }
+
+    .name{
+      font-weight:800;
+      color:#0f172a;
+    }
+
+    .sub{
+      display:block;
+      margin-top:4px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .sum{
+      font-weight:900;
+      color:#059669;
+      font-size:17px;
+    }
+
+    .score{
+      display:inline-flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:68px;
+      padding:7px 9px;
+      border-radius:14px;
+      font-weight:800;
+      line-height:1.05;
+      border:1px solid transparent;
+      white-space:nowrap;
+    }
+
+    .score small{
+      font-weight:600;
+      font-size:11px;
+      line-height:1.1;
+    }
+
+    .score.good{
+      background:#ecfdf5;
+      border-color:#bbf7d0;
+      color:var(--good);
+    }
+
+    .score.bad{
+      background:#f3f4f6;
+      border-color:#e5e7eb;
+      color:var(--bad);
+    }
+
+    .footer{
+      margin-top:18px;
+      padding:14px 16px;
+      color:#64748b;
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .mini-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1;
+      opacity:.85;
+      transition:.15s ease;
+    }
+
+    .mini-link svg{
+      width:14px;
+      height:14px;
+      fill:currentColor;
+      flex:none;
+    }
+
+    .mini-link:hover{
+      color:#334155;
+      opacity:1;
+    }
+
+    @media (max-width: 900px){
+      .summary{grid-template-columns:repeat(2, minmax(0, 1fr))}
+      .group-head{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+
+    @media (max-width: 640px){
+      .wrap{
+        padding:10px 8px 18px;
+      }
+
+      .summary{
+        grid-template-columns:1fr;
+      }
+
+      .header{
+        padding:16px 14px;
+        border-radius:18px;
+      }
+
+      .group{
+        border-radius:18px;
+      }
+
+      .group-head{
+        padding:14px 14px;
+      }
+
+      .group-head h2{
+        font-size:20px;
+      }
+
+      .tabs{
+        top:0;
+        border-radius:14px;
+        padding:8px;
+      }
+
+      thead th{
+        padding:11px 12px;
+        font-size:11px;
+      }
+
+      tbody td{
+        padding:11px 12px;
+      }
+
+      table{
+        min-width:700px;
+      }
+
+      .footer{
+        justify-content:flex-start;
+        padding-left:4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1>РЕЙТИНГ</h1>
+      <p>СУММА ОЧКОВ ПОСЛЕ (flag1) СТАРТОВ</p>
+    </div>
+
+    <div class="summary">
+      <div class="stat">
+        <div class="label">Групп</div>
+        <div class="value accent">(flag2)</div>
+      </div>
+      <div class="stat">
+        <div class="label">Участников</div>
+        <div class="value">(flag3)</div>
+      </div>
+      <div class="stat">
+        <div class="label">Лучший результат</div>
+        <div class="value green">(flag4)</div>
+      </div>
+    </div>
+
+    <nav class="tabs">
+      <a href="#m16">M16</a>
+      <a href="#m18">M18</a>
+      <a href="#w12">Ж12</a>
+      <a href="#w14">Ж14</a>
+      <a href="#w16">Ж16</a>
+      <a href="#w18">Ж18</a>
+      <a href="#m20">M20</a>
+      <a href="#m21">M21</a>
+    </nav>
+
+    <!--flag5-->
+    <section class="group" id="link">
+      <div class="group-head">
+        <h2>groupInJSON</h2>
+        <div class="meta">group.size()</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Спортсмен</th>
+              <th>Г. р.</th>
+              <th>Сумма</th>
+              <th><a href="link1.html" target="_blank">1 старт</a></th>
+            </tr>
+          </thead>
+          <tbody><!--flag6-->
+            <tr class="top1">
+              <td class="rank">1</td>
+              <td class="name">Поддубный Александр<span class="sub">СКО «Орион»</span></td>
+              <td>2007</td>
+              <td class="sum">3720</td>
+              <td><span class="score good">980<small>1 / 40:12</small></span></td>
+              <td><span class="score good">1000<small>1 / 39:02</small></span></td>
+              <td><span class="score good">740<small>3 / 45:18</small></span></td>
+              <td><span class="score good">1000<small>1 / 38:44</small></span></td>
+            </tr>
+            <tr class="top2">
+              <td class="rank">2</td>
+              <td class="name">Кравцов Артём<span class="sub">Минский район</span></td>
+              <td>Минский район</td>
+              <td class="sum">3580</td>
+              <td><span class="score good">910<small>2 / 41:03</small></span></td>
+              <td><span class="score good">965<small>2 / 40:11</small></span></td>
+              <td><span class="score good">805<small>4 / 44:27</small></span></td>
+              <td><span class="score good">900<small>2 / 42:00</small></span></td>
+            </tr>
+            <tr class="top3">
+              <td class="rank">3</td>
+              <td class="name">Лисовский Илья<span class="sub">КСО «Эридан»</span></td>
+              <td>КСО «Эридан»</td>
+              <td class="sum">3431</td>
+              <td><span class="score good">851<small>3 / 42:18</small></span></td>
+              <td><span class="score good">1000<small>1 / 39:31</small></span></td>
+              <td><span class="score good">780<small>3 / 45:59</small></span></td>
+              <td><span class="score bad">800<small>снят</small></span></td>
+            </tr>
+            <tr>
+              <td class="rank">4</td>
+              <td class="name">Смирнов Иван<span class="sub">Лично</span></td>
+              <td>Лично</td>
+              <td class="sum">3120</td>
+              <td><span class="score good">820<small>4 / 43:10</small></span></td>
+              <td><span class="score good">900<small>3 / 41:22</small></span></td>
+              <td><span class="score bad">650<small>8 / 49:05</small></span></td>
+              <td><span class="score good">750<small>5 / 44:01</small></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a class="mini-link" href="https://github.com/Igor4183/RaitingCounter" target="_blank" rel="noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .5C5.7.5.5 5.7.5 12c0 5 3.2 9.3 7.6 10.8.6.1.8-.3.8-.6v-2c-3.1.7-3.8-1.3-3.8-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.7.1-.7.1-.7 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.6.4-1.1.7-1.3-2.4-.3-5-1.2-5-5.3 0-1.2.4-2.1 1-2.8-.1-.3-.4-1.4.1-2.9 0 0 .9-.3 2.9 1.1.8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c2-1.4 2.9-1.1 2.9-1.1.5 1.5.2 2.6.1 2.9.6.7 1 1.6 1 2.8 0 4.1-2.6 5-5 5.3.4.3.8.9.8 1.8v2.6c0 .3.2.7.8.6C20.3 21.3 23.5 17 23.5 12 23.5 5.7 18.3.5 12 .5z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+
+      <a class="mini-link" href="https://t.me/igor_mihalkin" target="_blank" rel="noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.9 15.2 9.5 20c.6 0 .9-.3 1.3-.6l3-2.8 6.2 4.5c1.1.6 1.9.3 2.2-1l4-18.7c.4-1.5-.5-2.1-1.6-1.7L1.4 9.4C-.1 10-.1 10.9 1.2 11.3l5.4 1.7L19 5.1c.6-.4 1.1-.2.7.2"/>
+        </svg>
+        <span>@igor_mihalkin</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

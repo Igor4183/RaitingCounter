@@ -2,7 +2,8 @@
 #include "config.h"
 #include "parser.h"
 #include "u32string.h"
-#include "generator.h"
+#include "debugHTML.h"
+#include "releaseHTML.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -29,8 +30,12 @@ int main(){
     //     std::cout << std::endl;
     // }
 
-    for (auto [key, athlete] : bigBase)
+    for (auto [key, athlete] : bigBase){
+         while ((int)athlete.points.size()<cntCompetitions)
+            athlete.points.push_back(Result(&pages[athlete.points.size()]));
+        bestScore = std::max(bestScore, athlete.sum);
         groupBase[athlete.group].push_back(athlete);
+    }
     
     for (auto& [group, vec] : groupBase){
         std::sort(vec.begin(), vec.end(), [](const Athlete& a, const Athlete& b){
@@ -38,5 +43,9 @@ int main(){
         });
     }
 
-    generate();
+    for (std::u32string group : groupsInJSON)
+        cntAthletes += groupBase[group].size();
+
+    makeDebugHTML();
+    makeReleaseHTML();
 }
