@@ -1,4 +1,5 @@
 #pragma once
+#include "u32string.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,9 +7,12 @@
 #include <cmath>
 #include <algorithm>
 #include <numeric>
+#include <fstream>
+#include <sstream>
+
 
 const int nowYear = 2026;
-const size_t getBest = 2;
+extern size_t validStarts;
 const std::map<std::u32string, std::vector<std::u32string>> aboveGroups = {
     {U"М10", {U"М12"}},
     {U"М12", {U"М14"}},
@@ -27,32 +31,37 @@ const std::map<std::u32string, std::vector<std::u32string>> aboveGroups = {
     {U"Ж21", {U"Ж21Е"}},
 };
 
-enum class Type{
-    debug,
-    release
-};
-
 struct Competition{
     int id = -1;
     std::u32string url, title, discipline, date;
     int classComp;
 };
 
+enum class TypeResult{
+    valid,
+    outOfCompetition,
+    removed,
+    undefinded
+};
+
 struct Result{
     Competition* page = nullptr;
     int time = -1, place = -1;
     int score = 0;
+    TypeResult type = TypeResult::undefinded;
 
     Result() = default;
     Result(Competition* page) : page(page) {} 
+    Result(TypeResult type) : type(type) {}
 
     int getScore(int time, int place, Result& leader, Competition* page){
-        this->page = page;
         if (time == -1 or place == -1 or page == nullptr) {
             std::cerr << "model.h::getScore error: " << time << ' ' << place << " page==nullptr -> " << !page << std::endl;
             exit(0);
         }
 
+        type = TypeResult::valid;
+        this->page = page;
         this->time = time;
         this->place = place;
         // std::cout << leader.time << ' ' << time << ' ' << place << ' ';
@@ -77,7 +86,8 @@ struct Athlete{
             return points[a].score > points[b].score;
         });
 
-        if (idxs.size()>getBest) idxs.resize(getBest);
+        if (idxs.size()>validStarts) idxs.resize(validStarts);
+        while (!idxs.empty() and points[idxs.back()].score<=0) idxs.pop_back();
         sum = 0;
         for (auto idx : idxs) 
             sum+=points[idx].score;
@@ -90,15 +100,15 @@ struct Athlete{
         if (this->DOB == -1) this->DOB = DOB;
     }
 
-    void add_points(Competition& page, int time, int place, Result& leader) {
+    void add_points(Competition& page, int time, int place, Result& leader, TypeResult type = TypeResult::valid) {
         while ((int)points.size()<page.id)
             points.emplace_back(Result());
-        points.back().getScore(time, place, leader, &page);
+        if (type == TypeResult::valid) points.back().getScore(time, place, leader, &page);
+        else points.back().type = type;
         updateSum();
     }
 };
 
-extern Type typeResult;
 extern int cntCompetitions;
 extern int cntAthletes;
 extern int bestScore;

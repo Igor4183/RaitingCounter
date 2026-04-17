@@ -1,8 +1,4 @@
 #include "u32string.h"
-#include <iostream>
-#include <string>
-#include <codecvt>
-#include <locale>
 
 std::string to_utf8(const std::u32string s) {
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;

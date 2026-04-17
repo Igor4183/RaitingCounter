@@ -2,7 +2,7 @@
 
 std::u32string getTable(std::u32string group){
     std::u32string res = U"<h2> " + group + U" </h2>\n";
-    res+=U"<h4> Лучшие " + to_u32(getBest) + U" старта</h4>\n\n";
+    res+=U"<h4> Лучшие " + to_u32(validStarts) + U" старта</h4>\n\n";
     res+=U"<table border=\"1\">\n";
     res+=U"<tr>\n";
     res+=U"  <th>#</th>\n";
@@ -35,7 +35,6 @@ std::u32string getTable(std::u32string group){
 }
 
 void makeDebugHTML(){
-    if (typeResult==Type::debug) std::cout << "start makeDebugHTML" << std::endl;
     std::ifstream in("template/debugTemplate.html");
     std::u32string res = U"";
 
@@ -51,7 +50,7 @@ void makeDebugHTML(){
     res.erase(pos, 15);
 
     for (std::u32string group : groupsInJSON){
-        if (typeResult==Type::debug)  std::cout << group << " size: " << groupBase[group].size() << std::endl;
+        std::cout << group << " size: " << groupBase[group].size() << std::endl;
         std::u32string table = getTable(group);
         res = res.substr(0, pos) + table + res.substr(pos);
         pos += table.size();

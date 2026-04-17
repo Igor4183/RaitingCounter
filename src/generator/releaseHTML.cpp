@@ -1,6 +1,6 @@
 #include <releaseHTML.h>
 
-std::u32string genLink (std::u32string group){
+std::u32string genLink(std::u32string group){
     std::u32string link;
     for (auto c : group){
         if (c==U'М' or c==U'м') link+=U'm';
@@ -78,8 +78,8 @@ void writeGroupStart(std::ofstream& out, std::u32string group){
 }
 
 std::string checkRes(std::vector<int>& idxs, int targ){
-    if (find(idxs.begin(), idxs.end(), targ) == idxs.end()) return "bad";
-    else return "good";
+    if (find(idxs.begin(), idxs.end(), targ) == idxs.end()) return "out";
+    else return "in";
 }
 
 void writeRow(std::ofstream& out, Athlete& a, int top){
@@ -90,8 +90,21 @@ void writeRow(std::ofstream& out, Athlete& a, int top){
     out << "              <td>" << a.DOB << "</td>\n";
     out << "              <td class=\"sum\">" << a.sum << "</td>\n";
     for (int i = 0; i<cntCompetitions; i++){
-        out << "              <td><span class=\"score " << checkRes(a.idxs, i) << "\">" << a.points[i].score;
-        out << "<small>" << makeRes(a.points[i].place, a.points[i].time) << "</small></span></td>\n";
+        out << "              <td>\n";
+        if (a.points[i].type == TypeResult::valid){
+            out << "                <div class=\"res res-score " << checkRes(a.idxs, i) << "-sum\">\n";
+            out << "                  <div class=\"res-main\">" << a.points[i].score << "</div>\n";
+            out << "                  <div class=\"res-sub\">" << makeRes(a.points[i].place, a.points[i].time) << "</div>\n";
+            out << "                </div>\n";
+        } else{
+            if (a.points[i].type == TypeResult::removed) out << "                <div class=\"res res-status\">снят</div>\n";
+            if (a.points[i].type == TypeResult::outOfCompetition) out << "                <div class=\"res res-status\">в/к</div>\n";
+            if (a.points[i].type == TypeResult::undefinded) out << "                <div class=\"res res-status\">-</div>\n"; 
+        }
+
+        out << "              </td>\n";
+        // out << "              <td><span class=\"score " << checkRes(a.idxs, i) << "\">" << a.points[i].score;
+        // out << "<small>" << makeRes(a.points[i].place, a.points[i].time) << "</small></span></td>\n";
     }
     out << "            </tr>\n";
 

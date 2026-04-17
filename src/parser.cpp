@@ -1,13 +1,5 @@
 #include "parser.h"
 #include "model.h"
-#include "u32string.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-#include <cmath>
 
 void downloadPage(std::u32string u32link){
     std::string link = to_utf8(u32link);
@@ -36,11 +28,9 @@ std::u32string getGroup (char32_t gender, int date){
 
 void parse(Competition& page){
     downloadPage(page.url);
-    if (typeResult==Type::debug){
-        std::cout << "--------------------------------------------------" << std::endl;
-        std::cout << "Downloaded " << page.url << std::endl;
-        std::cout << "--------------------------------------------------" << std::endl;
-    }
+    std::cout << "--------------------------------------------------" << std::endl;
+    std::cout << "Downloaded " << page.url << std::endl;
+    std::cout << "--------------------------------------------------" << std::endl;
 
     for (std::u32string group : groups){
         std::ifstream fin("build/page.html");
@@ -99,7 +89,13 @@ void parse(Competition& page){
                         std::string placeStr;
                         iss >> placeStr;
                         // std::cout << "placeStr: " << placeStr << " | "; 
-                        if (!isNumber(placeStr)) continue; // "в/к, -"
+                        if (!isNumber(placeStr)) { // "в/к, -"
+                            std::u32string key = u32name + U" " + u32surname + U" " + to_u32(date);
+                            if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, u32surname, group, date);
+                            if (placeStr=="-") bigBase[key].add_points(page, -1, -1, leader, TypeResult::removed);
+                            else bigBase[key].add_points(page, -1, -1, leader, TypeResult::outOfCompetition);
+                            continue;
+                        }
                         int place = stoi(placeStr);
 
                         iss.clear();

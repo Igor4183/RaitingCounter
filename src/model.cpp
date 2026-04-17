@@ -1,7 +1,6 @@
 #include "model.h"
-#include <iostream>
 
-Type typeResult = Type::debug;
+size_t validStarts;
 int cntCompetitions = 0;
 int cntAthletes = 0;
 int bestScore = -1;

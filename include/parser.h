@@ -1,6 +1,5 @@
 #pragma once
 #include "model.h"
-#include <iostream>
 
 void downloadPage(std::u32string link);
 int getTime (const std::u32string hmmss);

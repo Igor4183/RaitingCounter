@@ -1,12 +1,4 @@
 #include "config.h"
-#include "model.h"
-#include "json.hpp"
-#include "u32string.h"
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
 
 using json = nlohmann::json;
 
@@ -22,7 +14,7 @@ void readConfig(){
     json j;
     file >> j;
 
-    typeResult = (j["type"] == "debug" ? Type::debug : Type::release);
+    validStarts = j["valid_starts"];
     for (std::string group : j["groups"]){
         groupsInJSON.push_back(to_u32(group));
         addGroup(to_u32(group));

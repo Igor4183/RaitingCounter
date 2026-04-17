@@ -1,13 +1,8 @@
 #include "model.h"
 #include "config.h"
 #include "parser.h"
-#include "u32string.h"
 #include "debugHTML.h"
 #include "releaseHTML.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
 
 int main(){
     readConfig();
@@ -19,9 +14,7 @@ int main(){
     for (auto& page : pages)
         parse(page);
     
-    if (typeResult==Type::debug){
-        std::cout << "------------------" << "base_size: " << bigBase.size() << "------------------" << std::endl;
-    }
+    std::cout << "------------------" << "base_size: " << bigBase.size() << "------------------" << std::endl;
 
     // for (auto [key, a] : bigBase){
     //     std::cout << a.name << ' ' << a.surname << ' ' << a.group << ' ' << a.DOB << ' ' << a.sum << ": ";
