@@ -1,0 +1,6 @@
+*.o
+build/
+output/
+app/
+.DS_Store
+.vscode/
