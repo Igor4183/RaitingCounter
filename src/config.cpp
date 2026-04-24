@@ -35,4 +35,8 @@ void readConfig(){
         pages.push_back(Competition{id, to_u32(url), to_u32(title), to_u32(discipline), to_u32(date), classComp});
     }
 
+    std::sort(pages.begin(), pages.end(), [](const Competition& a, const Competition& b){
+        return a.id<b.id;
+    });
+
 }

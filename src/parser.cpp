@@ -19,14 +19,7 @@ bool isNumber(const std::string s){
     return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
 }
 
-std::u32string getGroup (char32_t gender, int date){
-    int groupNum = nowYear - date;
-    groupNum += (groupNum & 1);
-    if (groupNum>18) groupNum = 21;
-    return std::u32string(1, gender) + to_u32(groupNum);
-}
-
-void parse(Competition& page){
+void parse(Competition& page, int colNumb){
     downloadPage(page.url);
     std::cout << "--------------------------------------------------" << std::endl;
     std::cout << "Downloaded " << page.url << std::endl;
@@ -92,8 +85,8 @@ void parse(Competition& page){
                         if (!isNumber(placeStr)) { // "в/к, -"
                             std::u32string key = u32name + U" " + u32surname + U" " + to_u32(date);
                             if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, u32surname, group, date);
-                            if (placeStr=="-") bigBase[key].add_points(page, -1, -1, leader, TypeResult::removed);
-                            else bigBase[key].add_points(page, -1, -1, leader, TypeResult::outOfCompetition);
+                            if (placeStr=="-") bigBase[key].add_points(page, -1, -1, leader, colNumb, TypeResult::removed);
+                            else bigBase[key].add_points(page, -1, -1, leader, colNumb, TypeResult::outOfCompetition);
                             continue;
                         }
                         int place = stoi(placeStr);
@@ -108,7 +101,7 @@ void parse(Competition& page){
                         if (place == 1) leader.getScore(resTime, place, leader, &page);
                         std::u32string key = u32name + U" " + u32surname + U" " + to_u32(date);
                         if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, u32surname, group, date);
-                        bigBase[key].add_points(page, resTime, place, leader);
+                        bigBase[key].add_points(page, resTime, place, leader, colNumb);
                     }
                     break;
                 }

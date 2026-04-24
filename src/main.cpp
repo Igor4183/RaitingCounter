@@ -11,8 +11,11 @@ int main(){
     //     std::cout << page.id << ' ' << page.url << ' ' << page.title << ' ' << page.discipline << ' ' << page.date << ' ' << page.classComp << std::endl;
     // }
     
-    for (auto& page : pages)
-        parse(page);
+    for (size_t i = 0; i<pages.size(); i++){
+        auto& page = pages[i];
+        int colNumb = i+1;
+        parse(page, colNumb);
+    }
     
     std::cout << "------------------" << "base_size: " << bigBase.size() << "------------------" << std::endl;
 

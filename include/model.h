@@ -14,18 +14,18 @@
 const int nowYear = 2026;
 extern size_t validStarts;
 const std::map<std::u32string, std::vector<std::u32string>> aboveGroups = {
-    {U"М10", {U"М12"}},
-    {U"М12", {U"М14"}},
-    {U"М14", {U"М16"}},
-    {U"М16", {U"М18"}},
+    {U"М10", {U"М12", U"М12А"}},
+    {U"М12", {U"М14", U"М14А"}},
+    {U"М14", {U"М16", U"М16А"}},
+    {U"М16", {U"М18", U"М18А"}},
     {U"М18", {U"М20", U"М20", U"М21"}},
     {U"М20", {U"М21", U"М21Е"}},
     {U"М21", {U"М21Е"}},
     {U"М21Е", {U"Ж10"}},
-    {U"Ж10", {U"Ж12"}},
-    {U"Ж12", {U"Ж14"}},
-    {U"Ж14", {U"Ж16"}},
-    {U"Ж16", {U"Ж18"}},
+    {U"Ж10", {U"Ж12", U"Ж12А"}},
+    {U"Ж12", {U"Ж14", U"Ж14А"}},
+    {U"Ж14", {U"Ж16", U"Ж16А"}},
+    {U"Ж16", {U"Ж18", U"Ж18А"}},
     {U"Ж18", {U"Ж20", U"Ж21", U"Ж21Е"}},
     {U"Ж20", {U"Ж21", U"Ж21Е"}},
     {U"Ж21", {U"Ж21Е"}},
@@ -93,15 +93,22 @@ struct Athlete{
             sum+=points[idx].score;
     }
 
+    std::u32string getGroup(char32_t gender, int date){
+        int groupNum = nowYear - date;
+        groupNum += (groupNum & 1);
+        if (groupNum>18) groupNum = 21;
+        return std::u32string(1, gender) + to_u32(groupNum);
+    }
+
     void makeAthlete(std::u32string name, std::u32string surname, std::u32string group, int DOB){
         if (this->name==U"") this->name = name;
         if (this->surname==U"") this->surname = surname;
-        if (this->group==U"") this->group = group;
+        if (this->group==U"") this->group = getGroup(group[0], DOB);
         if (this->DOB == -1) this->DOB = DOB;
     }
 
-    void add_points(Competition& page, int time, int place, Result& leader, TypeResult type = TypeResult::valid) {
-        while ((int)points.size()<page.id)
+    void add_points(Competition& page, int time, int place, Result& leader, int colNumb, TypeResult type = TypeResult::valid) {
+        while ((int)points.size()<colNumb)
             points.emplace_back(Result());
         if (type == TypeResult::valid) points.back().getScore(time, place, leader, &page);
         else points.back().type = type;

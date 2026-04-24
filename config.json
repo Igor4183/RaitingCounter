@@ -4,6 +4,30 @@
   "pages": [
     {
       "id": 1,
+      "url": "http://www.obelarus.net/results/2026/260420r_grodno.htm",
+      "title": "GFD 3 day",
+      "discipline": "classic",
+      "date": "2026-04-21",
+      "class": 1000
+    },
+    {
+      "id": 2,
+      "url": "http://www.obelarus.net/results/2026/260419r_grodno.htm",
+      "title": "GFD 2 day",
+      "discipline": "middle",
+      "date": "2026-04-20",
+      "class": 1000
+    },
+    {
+      "id": 3,
+      "url": "http://www.obelarus.net/results/2026/260418r_grodno.htm",
+      "title": "GFD 1 day",
+      "discipline": "sprint",
+      "date": "2026-04-19",
+      "class": 1000
+    },
+    {
+      "id": 4,
       "url": "http://www.obelarus.net/results/2026/260405r_orion-spring.htm",
       "title": "Orion 2 day",
       "discipline": "classic",
@@ -11,7 +35,7 @@
       "class": 1000
     },
     {
-      "id": 2,
+      "id": 5,
       "url": "http://www.obelarus.net/results/2026/260404r_orion-spring.htm",
       "title": "Orion 1 day",
       "discipline": "sprint",
@@ -19,7 +43,7 @@
       "class": 1000
     },
     {
-      "id": 3,
+      "id": 6,
       "url": "http://www.obelarus.net/results/2026/260329r_brest.htm",
       "title": "Brest 3 day",
       "discipline": "None",
@@ -27,7 +51,7 @@
       "class": 1000
     },
     {
-      "id": 4,
+      "id": 7,
       "url": "http://www.obelarus.net/results/2026/260328r_brest.htm",
       "title": "Brest 2 day",
       "discipline": "None",
