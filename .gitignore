@@ -1,6 +1,6 @@
 *.o
 build/
 output/
-app/
+app
 .DS_Store
 .vscode/

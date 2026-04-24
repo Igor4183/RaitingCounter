@@ -42,6 +42,7 @@ int main(){
     for (std::u32string group : groupsInJSON)
         cntAthletes += groupBase[group].size();
 
+    std::filesystem::create_directories("output");
     makeDebugHTML();
     makeReleaseHTML();
 }
