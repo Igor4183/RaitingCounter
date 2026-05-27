@@ -1,5 +1,6 @@
 #pragma once
 #include "u32string.h"
+#include "sqlite3.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -33,7 +34,7 @@ const std::map<std::u32string, std::vector<std::u32string>> aboveGroups = {
 
 struct Competition{
     int id = -1;
-    std::u32string url, title, discipline, date;
+    std::u32string url, title, nameTable, discipline, date;
     int classComp;
 };
 
@@ -41,14 +42,14 @@ enum class TypeResult{
     valid,
     outOfCompetition,
     removed,
-    undefinded
+    undefined
 };
 
 struct Result{
     Competition* page = nullptr;
     int time = -1, place = -1;
     int score = 0;
-    TypeResult type = TypeResult::undefinded;
+    TypeResult type = TypeResult::undefined;
 
     Result() = default;
     Result(Competition* page) : page(page) {} 
@@ -116,6 +117,7 @@ struct Athlete{
     }
 };
 
+extern sqlite3* db;
 extern int cntCompetitions;
 extern int cntAthletes;
 extern int bestScore;

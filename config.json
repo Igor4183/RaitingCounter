@@ -4,56 +4,81 @@
   "pages": [
     {
       "id": 1,
+      "url": "http://www.obelarus.net/results/2026/260503r_mm.htm",
+      "title": "MOD 3 day",
+      "nameTable": "MayODays_3",
+      "discipline": "None",
+      "date": "2026-05-03",
+      "class": 1000
+    },
+    {
+      "id": 2,
+      "url": "http://www.obelarus.net/results/2026/260502r_mm.htm",
+      "title": "MOD 2 day",
+      "nameTable": "MayODays_2",
+      "discipline": "None",
+      "date": "2026-05-02",
+      "class": 1000
+    },
+    {
+      "id": 3,
       "url": "http://www.obelarus.net/results/2026/260420r_grodno.htm",
       "title": "GFD 3 day",
+      "nameTable": "MayODays_1",
       "discipline": "classic",
       "date": "2026-04-21",
       "class": 1000
     },
     {
-      "id": 2,
+      "id": 4,
       "url": "http://www.obelarus.net/results/2026/260419r_grodno.htm",
       "title": "GFD 2 day",
+      "nameTable": "GrodnoForestDays_2",
       "discipline": "middle",
       "date": "2026-04-20",
       "class": 1000
     },
     {
-      "id": 3,
+      "id": 5,
       "url": "http://www.obelarus.net/results/2026/260418r_grodno.htm",
       "title": "GFD 1 day",
+      "nameTable": "GrodnoForestDays_2",
       "discipline": "sprint",
       "date": "2026-04-19",
       "class": 1000
     },
     {
-      "id": 4,
+      "id": 6,
       "url": "http://www.obelarus.net/results/2026/260405r_orion-spring.htm",
       "title": "Orion 2 day",
+      "nameTable": "OrionSpring_2",
       "discipline": "classic",
       "date": "2026-04-05",
       "class": 1000
     },
     {
-      "id": 5,
+      "id": 7,
       "url": "http://www.obelarus.net/results/2026/260404r_orion-spring.htm",
       "title": "Orion 1 day",
+      "nameTable": "OrionSpring_1",
       "discipline": "sprint",
       "date": "2026-04-04",
       "class": 1000
     },
     {
-      "id": 6,
+      "id": 8,
       "url": "http://www.obelarus.net/results/2026/260329r_brest.htm",
       "title": "Brest 3 day",
+      "nameTable": "Brest_3",
       "discipline": "None",
       "date": "2026-03-29",
       "class": 1000
     },
     {
-      "id": 7,
+      "id": 9,
       "url": "http://www.obelarus.net/results/2026/260328r_brest.htm",
       "title": "Brest 2 day",
+      "nameTable": "Brest_2",
       "discipline": "None",
       "date": "2026-03-28",
       "class": 1000

@@ -1,10 +1,14 @@
 #include "model.h"
+#include "initialization.h"
 #include "config.h"
 #include "parser.h"
+#include "database_reader.h"
+#include "data_importer.h"
 #include "debugHTML.h"
 #include "releaseHTML.h"
 
 int main(){
+    init();
     readConfig();
 
     // for (auto page : pages){
@@ -13,8 +17,10 @@ int main(){
     
     for (size_t i = 0; i<pages.size(); i++){
         auto& page = pages[i];
-        int colNumb = i+1;
-        parse(page, colNumb);
+        // TODO
+        importData(page);
+        // readDatabase(page, i+1);
+        parse(page, i+1);
     }
     
     std::cout << "------------------" << "base_size: " << bigBase.size() << "------------------" << std::endl;

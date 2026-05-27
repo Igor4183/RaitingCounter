@@ -1,5 +1,6 @@
 #include "model.h"
 
+sqlite3* db = nullptr;
 size_t validStarts;
 int cntCompetitions = 0;
 int cntAthletes = 0;

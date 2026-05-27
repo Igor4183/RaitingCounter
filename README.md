@@ -5,7 +5,7 @@ RaitingCounter — это C++‑проект для скачивания и па
 Проект проходит несколько стадий обработки:
 
 1. чтение `config.json`;
-2. скачивание и парсинг страниц;
+2. скачивание и парсинг страниц в БД;
 3. сбор и хранение структурированных данных;
 4. генерация HTML‑файлов.
 
@@ -13,6 +13,7 @@ RaitingCounter — это C++‑проект для скачивания и па
 
 - читает настройки из `config.json`;
 - скачивает страницы с результатами соревнований;
+- создание и чтение БД;
 - парсит HTML и извлекает нужные данные;
 - формирует внутреннюю структуру данных по спортсменам и результатам;
 - создаёт два HTML‑файла:
@@ -22,6 +23,7 @@ RaitingCounter — это C++‑проект для скачивания и па
 ## Технологии
 
 - **C++**
+- **SQLite3**
 - **Makefile**
 - **nlohmann/json (****json.hpp****)**
 - **HTML / CSS**
@@ -78,6 +80,7 @@ make
       "id": 1,
       "url": "http://example.com/page.htm",
       "title": "Example Competition",
+      "nameTable": "Example_name",
       "discipline": "classic",
       "date": "2026-04-05",
       "class": 1000
@@ -86,21 +89,59 @@ make
 }
 ```
 
+## Хранение результатов
+
+Для хранения, кэширования и дальнейшего частичного обновления результатов используется SQLite база данных.
+
+Структура таблицы, название которой указано в`config.json`:
+
+#### main_base.db
+
+```sql
+CREATE TABLE competition (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    athlete_id INTEGER,
+    birth_year INTEGER,
+    club TEXT,
+    group_name TEXT,
+    total_time INTEGER,
+    place INTEGER,
+    status TEXT,
+    FOREIGN KEY (athlete_id) REFERENCES athlete(athlete_id) ON DELETE SET NULL
+);
+```
+
+>`status` может принимать значения:
+>- `valid`,
+>- `outOfCompetition`, // в/к
+>- `removed`, // cнят
+>- `undefined`.
+
+**Таблица athlete(общая база спортсменов):**
+```sql
+CREATE TABLE athlete (
+    athlete_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT, 
+    birth_year INTEGER, 
+    category TEXT
+);
+```
+
 ## Выходные файлы
 
-Проект может создавать два HTML‑файла:
+Проект создаёт два HTML‑файла:
 
 - **debug HTML** — для быстрой проверки корректности парсинга;
 - **release HTML** — для удобного просмотра результатов с оформлением.
 
 ## Структура проекта
 
-Обычно проект состоит из нескольких модулей:
+Проект состоит из нескольких модулей:
 
 - `config` — чтение и обработка `config.json`;
-- `parser` — скачивание и парсинг HTML;
+- `parser/` — скачивание и парсинг HTML с последующим сохраниением таблицы БД в `main_base.db`;
 - `model` — структуры данных;
-- `generator` — генерация HTML‑страниц;
+- `generator/` — генерация HTML‑страниц;
 - `u32string` — работа с Unicode/кириллицей;
 - `main` — точка входа.
 
@@ -119,5 +160,5 @@ make
 - работы с JSON;
 - разбиения кода на модули;
 - генерации HTML‑страниц;
-- использования Git и Makefile.
-
+- использования Git и Makefile;
+- изучение и работа с SQLite3.

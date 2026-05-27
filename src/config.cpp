@@ -28,11 +28,12 @@ void readConfig(){
         int id = page["id"];
         std::string url = page["url"];
         std::string title = page["title"];
+        std::string nameTable = page["nameTable"];
         std::string discipline = page["discipline"];
         std::string date = page["date"];
         int classComp = page["class"];
 
-        pages.push_back(Competition{id, to_u32(url), to_u32(title), to_u32(discipline), to_u32(date), classComp});
+        pages.push_back(Competition{id, to_u32(url), to_u32(title), to_u32(nameTable), to_u32(discipline), to_u32(date), classComp});
     }
 
     std::sort(pages.begin(), pages.end(), [](const Competition& a, const Competition& b){
