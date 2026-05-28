@@ -6,7 +6,6 @@ bool checkTable(std::string nameTable){
 R"(
 SELECT name 
 FROM sqlite_master
-R"(
 WHERE type='table' AND name=')" + nameTable + R"(';
 )";
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -51,7 +50,12 @@ int getAthleteId(std::u32string name, int date){
 }
 
 void importData(Competition& page){
-    if (checkTable(to_utf8(page.nameTable))) return;
+    if (checkTable(to_utf8(page.nameTable))) {
+        std::cout << "--------------------------------------------------" << std::endl;
+        std::cout << "existing table found " << page.nameTable << '\n';
+        std::cout << "--------------------------------------------------" << std::endl;
+        return;
+    }
 
     {
         std::string sql = 
@@ -67,7 +71,7 @@ R"(
     group_name TEXT,
     total_time INTEGER,
     place INTEGER,
-    status TEXT,
+    status INTEGER,
     FOREIGN KEY (athlete_id) REFERENCES athlete(athlete_id) ON DELETE SET NULL
 );
 )";
@@ -152,16 +156,11 @@ R"(
                     sqlite3_bind_text(stmt, 3, to_utf8(club).c_str(), -1, SQLITE_TRANSIENT);
                     sqlite3_bind_text(stmt, 4, to_utf8(group).c_str(), -1, SQLITE_TRANSIENT);
                     sqlite3_bind_int(stmt, 5, resTime);
-                    if(status==TypeResult::valid) {
-                        sqlite3_bind_int(stmt, 6, stoi(placeStr));
-                        sqlite3_bind_text(stmt, 7, "valid", -1, SQLITE_TRANSIENT);
-                    }
-                    else {
-                        sqlite3_bind_null(stmt, 6);
-                        if (status == TypeResult::outOfCompetition )sqlite3_bind_text(stmt, 7, "outOfCompetition", -1, SQLITE_TRANSIENT);
-                        else if (status == TypeResult::removed )sqlite3_bind_text(stmt, 7, "removed", -1, SQLITE_TRANSIENT);
-                        else if (status == TypeResult::undefined )sqlite3_bind_text(stmt, 7, "undefined", -1, SQLITE_TRANSIENT);
-                    }
+
+                    if(status==TypeResult::valid) sqlite3_bind_int(stmt, 6, stoi(placeStr));
+                    else sqlite3_bind_null(stmt, 6);
+        
+                    sqlite3_bind_int(stmt, 7, static_cast<int>(status));
 
                     sqlite3_step(stmt);
                     sqlite3_finalize(stmt);

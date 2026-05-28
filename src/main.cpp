@@ -17,11 +17,10 @@ int main(){
     
     for (size_t i = 0; i<pages.size(); i++){
         auto& page = pages[i];
-        // TODO
-        importData(page);
-        // readDatabase(page, i+1);
-        parse(page, i+1);
-    }
+        importData(page);             //
+        readDatabase(page, i + 1);    //
+        // parse(page, i+1);          <- рабочая версия, которая не создаёт БД, а работает самостоятельно
+    } 
     
     std::cout << "------------------" << "base_size: " << bigBase.size() << "------------------" << std::endl;
 

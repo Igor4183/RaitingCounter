@@ -2,5 +2,6 @@
 build/
 output/
 app
+main_base.db
 .DS_Store
 .vscode/

@@ -86,8 +86,8 @@ void writeRow(std::ofstream& out, Athlete& a, int top){
     if (top<=3) out << "            <tr class=\"top" << top << "\">\n";
     else out << "            <tr>\n";
     out << "              <td class=\"rank\">" << top << "</td>\n";
-    out << "              <td class=\"name\">" << a.surname << ' ' << a.name << "<span class=\"sub\"></span></td>\n"; //<span class=\"sub\">club</span>
-    out << "              <td>" << a.DOB << "</td>\n";
+    out << "              <td class=\"name\">" << a.name << "<span class=\"sub\"></span></td>\n"; //<span class=\"sub\">club</span>
+    out << "              <td>" << a.birth_year << "</td>\n";
     out << "              <td class=\"sum\">" << a.sum << "</td>\n";
     for (int i = 0; i<cntCompetitions; i++){
         out << "              <td>\n";
@@ -99,7 +99,7 @@ void writeRow(std::ofstream& out, Athlete& a, int top){
         } else{
             if (a.points[i].type == TypeResult::removed) out << "                <div class=\"res res-status\">снят</div>\n";
             if (a.points[i].type == TypeResult::outOfCompetition) out << "                <div class=\"res res-status\">в/к</div>\n";
-            if (a.points[i].type == TypeResult::undefinded) out << "                <div class=\"res res-status\">-</div>\n"; 
+            if (a.points[i].type == TypeResult::undefined) out << "                <div class=\"res res-status\">-</div>\n"; 
         }
 
         out << "              </td>\n";

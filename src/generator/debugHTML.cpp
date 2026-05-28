@@ -16,7 +16,7 @@ std::u32string getTable(std::u32string group){
     for (size_t i = 1; i<=a.size(); i++){
         res+=U"<tr>\n";
         res+=U"  <td>" + to_u32(i) + U"</td>\n";
-        res+=U"  <td>" + a[i-1].surname + U" " + a[i-1].name + U"</td>\n";
+        res+=U"  <td>" + a[i-1].name + U"</td>\n";
         res+=U"  <td>" + to_u32(a[i-1].sum) + U"</td>\n";
         for (int j = 0; j<cntCompetitions; j++){
             //res+=U"  <td>" + to_u32(a[i-1].points[j].score) + U"</td>\n";

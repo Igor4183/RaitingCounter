@@ -58,7 +58,7 @@ void parse(Competition& page, int colNumb){
                         std::istringstream iss(line.substr(nameptr));
                         std::string name, surname;
                         iss >> surname >> name;
-                        std::u32string u32name = to_u32(name), u32surname = to_u32(surname);
+                        std::u32string u32name = to_u32(surname) + U" " + to_u32(name);
 
                         iss.clear();
                         iss.str(to_utf8(u32line.substr(datePtr)));
@@ -72,9 +72,10 @@ void parse(Competition& page, int colNumb){
                         std::string placeStr;
                         iss >> placeStr;
                         // std::cout << "placeStr: " << placeStr << " | "; 
+
                         if (!isNumber(placeStr)) { // "в/к, -"
-                            std::u32string key = u32name + U" " + u32surname + U" " + to_u32(date);
-                            if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, u32surname, group, date);
+                            std::u32string key = u32name + U" " + to_u32(date);
+                            if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, group, date);
                             if (placeStr=="-") bigBase[key].add_points(page, -1, -1, leader, colNumb, TypeResult::removed);
                             else bigBase[key].add_points(page, -1, -1, leader, colNumb, TypeResult::outOfCompetition);
                             continue;
@@ -89,8 +90,8 @@ void parse(Competition& page, int colNumb){
                         int resTime = getTime(resTimeStr);
                         
                         if (place == 1) leader.getScore(resTime, place, leader, &page);
-                        std::u32string key = u32name + U" " + u32surname + U" " + to_u32(date);
-                        if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, u32surname, group, date);
+                        std::u32string key = u32name + U" " + to_u32(date);
+                        if (bigBase.find(key) == bigBase.end()) bigBase[key].makeAthlete(u32name, group, date);
                         bigBase[key].add_points(page, resTime, place, leader, colNumb);
                     }
                     break;

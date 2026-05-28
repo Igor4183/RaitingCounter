@@ -39,10 +39,10 @@ struct Competition{
 };
 
 enum class TypeResult{
-    valid,
-    outOfCompetition,
-    removed,
-    undefined
+    valid = 1,
+    outOfCompetition = 0,
+    removed = -1,
+    undefined = -2
 };
 
 struct Result{
@@ -74,8 +74,8 @@ struct Result{
 };  
 
 struct Athlete{
-    std::u32string name = U"", surname = U"", group = U"";
-    int DOB = -1;
+    std::u32string name = U"", group = U"";
+    int birth_year = -1;
     std::vector<Result> points;
     std::vector<int> idxs;
     int sum = 0;
@@ -101,11 +101,10 @@ struct Athlete{
         return std::u32string(1, gender) + to_u32(groupNum);
     }
 
-    void makeAthlete(std::u32string name, std::u32string surname, std::u32string group, int DOB){
+    void makeAthlete(std::u32string name, std::u32string group, int birth_year){
         if (this->name==U"") this->name = name;
-        if (this->surname==U"") this->surname = surname;
-        if (this->group==U"") this->group = getGroup(group[0], DOB);
-        if (this->DOB == -1) this->DOB = DOB;
+        if (this->group==U"") this->group = getGroup(group[0], birth_year);
+        if (this->birth_year == -1) this->birth_year = birth_year;
     }
 
     void add_points(Competition& page, int time, int place, Result& leader, int colNumb, TypeResult type = TypeResult::valid) {
